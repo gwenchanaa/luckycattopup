@@ -36,6 +36,9 @@ yarn-error.log*
 # vercel
 .vercel
 
+# local mock-mode transaction store (dev only, see lib/db/store.file.ts)
+/.data
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts
