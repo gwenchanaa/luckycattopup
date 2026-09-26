@@ -1,31 +1,28 @@
 import Image from "next/image";
 import Link from "next/link";
-import { Card, CardContent } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import type { Game } from "@/types/product";
 
 export function GameCard({ game }: { game: Game }) {
   return (
     <Link href={`/games/${game.code}`} className="group block">
-      <Card className="h-full overflow-hidden py-0 transition-all duration-200 hover:-translate-y-1 hover:shadow-lg">
-        <CardContent className="flex flex-col items-center gap-3 p-4 text-center">
-          <div className="relative aspect-square w-full overflow-hidden rounded-xl bg-muted">
-            <Image
-              src={game.logoUrl}
-              alt={game.name}
-              fill
-              sizes="(max-width: 640px) 45vw, (max-width: 1024px) 22vw, 180px"
-              className="object-cover transition-transform duration-200 group-hover:scale-105"
-            />
-          </div>
-          <div className="w-full">
-            <p className="truncate font-semibold leading-tight">{game.name}</p>
-            <Badge variant="secondary" className="mt-1.5">
-              {game.category}
-            </Badge>
-          </div>
-        </CardContent>
-      </Card>
+      <div className="ink drop-ink press h-full rounded-2xl bg-card p-3">
+        <div className="cover-placeholder relative aspect-[4/3] overflow-hidden rounded-xl">
+          <Image
+            src={game.logoUrl}
+            alt={game.name}
+            fill
+            sizes="(max-width: 640px) 45vw, (max-width: 1024px) 30vw, 260px"
+            className="object-cover"
+          />
+        </div>
+        <div className="mt-2.5 truncate font-display text-[15px] font-bold leading-tight text-ink">
+          {game.name}
+        </div>
+        <div className="mb-2 truncate text-[11px] text-[#9c8c84]">{game.description}</div>
+        <span className="inline-block rounded-full border-[1.5px] border-koban-line bg-koban-soft px-2.5 py-1 text-[11px] font-bold text-[#6b4a16]">
+          {game.category}
+        </span>
+      </div>
     </Link>
   );
 }

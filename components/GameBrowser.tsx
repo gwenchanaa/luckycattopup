@@ -1,18 +1,22 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { AlertTriangle, RefreshCw } from "lucide-react";
+import Image from "next/image";
+import { useSearchParams } from "next/navigation";
+import { RefreshCw } from "lucide-react";
 import { SearchBar } from "@/components/SearchBar";
 import { GameGrid, GameGridSkeleton } from "@/components/GameGrid";
-import { Button } from "@/components/ui/button";
 import type { Game } from "@/types/product";
 
 type LoadState = "loading" | "error" | "ready";
 
 export function GameBrowser() {
+  const searchParams = useSearchParams();
+  const queryParam = searchParams.get("q") ?? "";
+
   const [games, setGames] = useState<Game[]>([]);
   const [state, setState] = useState<LoadState>("loading");
-  const [search, setSearch] = useState("");
+  const [search, setSearch] = useState(queryParam);
 
   async function load() {
     setState("loading");
@@ -32,6 +36,12 @@ export function GameBrowser() {
     load();
   }, []);
 
+  // The hero's search box navigates to /?q=… — keep the grid in step with it.
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- mirroring the URL into the controlled input
+    setSearch(queryParam);
+  }, [queryParam]);
+
   const filtered = useMemo(() => {
     const q = search.trim().toLowerCase();
     if (!q) return games;
@@ -49,16 +59,20 @@ export function GameBrowser() {
       {state === "loading" && <GameGridSkeleton />}
 
       {state === "error" && (
-        <div className="flex flex-col items-center gap-3 rounded-xl border border-dashed border-destructive/40 py-16 text-center">
-          <AlertTriangle className="h-10 w-10 text-destructive" />
-          <p className="font-medium">Gagal memuat daftar game</p>
-          <p className="text-sm text-muted-foreground">
+        <div className="flex flex-col items-center gap-3 rounded-2xl border-2 border-dashed border-bell/40 bg-sakura-soft py-14 text-center">
+          <Image src="/cat-face.png" alt="" width={64} height={64} className="size-16 opacity-80" />
+          <p className="font-display text-base font-bold text-ink">Gagal memuat daftar game</p>
+          <p className="max-w-xs text-[12.5px] text-[#8c7d75]">
             Terjadi masalah saat mengambil data. Coba lagi ya.
           </p>
-          <Button variant="outline" onClick={load} className="mt-2 gap-2">
-            <RefreshCw className="h-4 w-4" />
+          <button
+            type="button"
+            onClick={load}
+            className="ink drop-ink-sm press mt-1 flex items-center gap-2 rounded-full bg-card px-4 py-2 font-display text-[13px] font-bold text-ink"
+          >
+            <RefreshCw className="size-4" />
             Muat Ulang
-          </Button>
+          </button>
         </div>
       )}
 

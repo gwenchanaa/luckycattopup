@@ -1,12 +1,8 @@
 "use client";
 
 import { useState, type FormEvent } from "react";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { Search } from "lucide-react";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
 
 export default function StatusLookupPage() {
   const router = useRouter();
@@ -25,36 +21,48 @@ export default function StatusLookupPage() {
   }
 
   return (
-    <div className="mx-auto max-w-md px-4 py-16 sm:px-6">
-      <div className="text-center">
-        <h1 className="text-2xl font-bold">Cek Status Transaksi</h1>
-        <p className="mt-2 text-sm text-muted-foreground">
-          Masukkan Transaction ID yang kamu dapat setelah checkout.
-        </p>
+    <div className="mx-auto max-w-2xl px-4 py-10 sm:px-6">
+      <div className="mb-1.5 flex items-center gap-3">
+        <Image
+          src="/cat-face.png"
+          alt=""
+          width={34}
+          height={34}
+          className="size-[34px] rounded-[9px] bg-sakura object-cover"
+        />
+        <h1 className="font-display text-[26px] font-extrabold leading-none text-ink">
+          Cek pesanan
+        </h1>
+        <span className="pt-1.5 text-xs text-[#a99a92]">Track your order</span>
       </div>
 
-      <Card className="mt-6">
-        <CardContent className="p-5 sm:p-6">
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <div className="space-y-1.5">
-              <Label htmlFor="transactionId">Transaction ID</Label>
-              <Input
-                id="transactionId"
-                value={transactionId}
-                onChange={(e) => setTransactionId(e.target.value)}
-                placeholder="TX-AB12CD34EF56"
-                className="font-mono uppercase"
-                autoFocus
-              />
-              {error && <p className="text-sm text-destructive">{error}</p>}
-            </div>
-            <Button type="submit" size="lg" className="w-full gap-2">
-              <Search className="h-4 w-4" />
-              Cek Status
-            </Button>
-          </form>
-        </CardContent>
-      </Card>
+      <p className="mb-3.5 text-[12.5px] leading-[1.6] text-[#6b5c55]">
+        Tanpa login. Masukkan Order ID yang kamu dapat setelah checkout.
+      </p>
+
+      <form onSubmit={handleSubmit} className="flex max-w-[520px] gap-2.5">
+        <input
+          id="transactionId"
+          value={transactionId}
+          onChange={(e) => setTransactionId(e.target.value)}
+          placeholder="TX-AB12CD34EF56"
+          aria-label="Order ID"
+          autoFocus
+          className="ink-thin min-w-0 flex-1 rounded-[11px] bg-card px-3.5 py-3 font-mono text-[13.5px] font-bold uppercase text-ink outline-none placeholder:font-normal placeholder:text-[#c3b4ac] focus:ring-2 focus:ring-bell/30"
+        />
+        <button
+          type="submit"
+          className="press shrink-0 rounded-[11px] bg-bell px-6 py-3 text-[13px] font-bold text-white"
+        >
+          Lacak
+        </button>
+      </form>
+
+      {error ? (
+        <p className="mt-2.5 text-[11.5px] font-bold text-bell">{error}</p>
+      ) : (
+        <p className="mt-2.5 text-[11.5px] text-[#a99a92]">Contoh: TX-AB12CD34EF56</p>
+      )}
     </div>
   );
 }

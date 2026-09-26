@@ -1,39 +1,44 @@
-import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 import type { TransactionStatus } from "@/types/transaction";
 
 const STATUS_CONFIG: Record<TransactionStatus, { label: string; className: string }> = {
   PENDING_PAYMENT: {
-    label: "Menunggu Pembayaran",
-    className: "bg-amber-100 text-amber-800 border-amber-200",
+    label: "Menunggu bayar",
+    className: "bg-sakura-soft text-bell border-[#f3cfc9]",
   },
   PAID: {
-    label: "Pembayaran Diterima",
-    className: "bg-sky-100 text-sky-800 border-sky-200",
+    label: "Pembayaran diterima",
+    className: "bg-koban-soft text-[#6b4a16] border-koban-line",
   },
   PROCESSING: {
     label: "Diproses",
-    className: "bg-sky-100 text-sky-800 border-sky-200",
+    className: "bg-koban-soft text-[#6b4a16] border-koban-line",
   },
   SUCCESS: {
-    label: "Berhasil",
-    className: "bg-emerald-100 text-emerald-800 border-emerald-200",
+    label: "Selesai",
+    className: "bg-collar text-white border-collar",
   },
   FAILED: {
     label: "Gagal",
-    className: "bg-red-100 text-red-800 border-red-200",
+    className: "bg-sakura-soft text-bell border-[#f3cfc9]",
   },
   EXPIRED: {
     label: "Kedaluwarsa",
-    className: "bg-zinc-200 text-zinc-700 border-zinc-300",
+    className: "bg-[#f1ece7] text-[#8c7d75] border-[#e3d3cb]",
   },
 };
 
-export function StatusBadge({ status }: { status: TransactionStatus }) {
+export function StatusBadge({ status, className }: { status: TransactionStatus; className?: string }) {
   const config = STATUS_CONFIG[status];
   return (
-    <Badge variant="outline" className={cn("font-medium", config.className)}>
+    <span
+      className={cn(
+        "inline-flex items-center rounded-full border px-3.5 py-1.5 text-[11.5px] font-bold",
+        config.className,
+        className
+      )}
+    >
       {config.label}
-    </Badge>
+    </span>
   );
 }

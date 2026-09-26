@@ -14,14 +14,14 @@ export function ProductList({
 }) {
   if (products.length === 0) {
     return (
-      <p className="rounded-lg border border-dashed border-border p-6 text-center text-sm text-muted-foreground">
+      <p className="rounded-xl border-2 border-dashed border-ink/30 bg-sakura-soft p-6 text-center text-[12.5px] text-[#8c7d75]">
         Belum ada produk tersedia untuk game ini.
       </p>
     );
   }
 
   return (
-    <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
+    <div className="grid grid-cols-2 gap-2.5 sm:grid-cols-3 lg:grid-cols-5">
       {products.map((product) => {
         const selected = product.code === selectedCode;
         return (
@@ -31,18 +31,30 @@ export function ProductList({
             disabled={!product.isAvailable}
             onClick={() => onSelect(product)}
             className={cn(
-              "rounded-xl border p-3 text-left transition-all disabled:cursor-not-allowed disabled:opacity-50",
+              "relative rounded-[14px] border-2 p-2.5 text-center transition-all disabled:cursor-not-allowed disabled:opacity-45",
               selected
-                ? "border-primary bg-primary/15 ring-2 ring-primary"
-                : "border-border bg-card hover:border-primary/50 hover:bg-secondary/40"
+                ? "border-ink bg-koban shadow-[2px_2px_0_var(--ink)]"
+                : "border-[#e3d3cb] bg-card hover:border-ink"
             )}
           >
-            <p className="text-sm font-semibold leading-snug">{product.name}</p>
-            <p className="mt-1.5 text-sm font-bold text-foreground">
+            {selected && (
+              <span className="absolute -top-2.5 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full bg-bell px-2 py-[3px] text-[9px] font-bold text-white">
+                PILIHANMU
+              </span>
+            )}
+            <div className="truncate font-display text-base font-extrabold text-ink">
+              {product.name}
+            </div>
+            <div
+              className={cn(
+                "mt-0.5 text-[10.5px] font-medium",
+                selected ? "font-bold text-[#6b4a16]" : "text-[#8c7d75]"
+              )}
+            >
               {formatRupiah(product.price)}
-            </p>
+            </div>
             {!product.isAvailable && (
-              <p className="mt-1 text-xs text-destructive">Stok kosong</p>
+              <div className="mt-1 text-[10px] font-bold text-bell">Stok kosong</div>
             )}
           </button>
         );

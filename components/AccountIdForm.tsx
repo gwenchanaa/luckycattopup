@@ -1,10 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { CheckCircle2, Loader2, XCircle } from "lucide-react";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Button } from "@/components/ui/button";
+import { Loader2, XCircle } from "lucide-react";
+import { cn } from "@/lib/utils";
 import type { Game } from "@/types/product";
 
 interface Props {
@@ -15,16 +13,61 @@ interface Props {
   onServerIdChange: (v: string) => void;
 }
 
-export function AccountIdForm({ game, userId, serverId, onUserIdChange, onServerIdChange }: Props) {
-  const [checking, setChecking] = useState(false);
-  const [result, setResult] = useState<{ valid: boolean; message?: string; username?: string } | null>(
-    null
+function Field({
+  id,
+  label,
+  value,
+  onChange,
+  placeholder,
+  filled,
+}: {
+  id: string;
+  label: string;
+  value: string;
+  onChange: (v: string) => void;
+  placeholder: string;
+  filled: boolean;
+}) {
+  return (
+    <label
+      htmlFor={id}
+      className={cn(
+        "block cursor-text rounded-xl border-2 bg-card px-3.5 py-2.5 transition-colors focus-within:border-ink",
+        filled ? "border-ink bg-background" : "border-[#e3d3cb]"
+      )}
+    >
+      <span className="block text-[9.5px] text-[#9c8c84]">{label}</span>
+      <input
+        id={id}
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+        placeholder={placeholder}
+        inputMode="numeric"
+        className="w-full bg-transparent text-[15px] font-bold text-ink outline-none placeholder:font-medium placeholder:text-[#c3b4ac]"
+      />
+    </label>
   );
+}
+
+export function AccountIdForm({
+  game,
+  userId,
+  serverId,
+  onUserIdChange,
+  onServerIdChange,
+}: Props) {
+  const [checking, setChecking] = useState(false);
+  const [result, setResult] = useState<{
+    valid: boolean;
+    message?: string;
+    username?: string;
+  } | null>(null);
 
   if (game.idFieldType === "none") return null;
 
   const needsServerId = game.idFieldType === "user-id-server-id";
-  const canCheck = game.supportsValidation && userId.length >= 3 && (!needsServerId || serverId.length >= 1);
+  const canCheck =
+    game.supportsValidation && userId.length >= 3 && (!needsServerId || serverId.length >= 1);
 
   async function handleCheck() {
     setChecking(true);
@@ -49,57 +92,68 @@ export function AccountIdForm({ game, userId, serverId, onUserIdChange, onServer
   }
 
   return (
-    <div className="space-y-3">
-      <div className={needsServerId ? "grid grid-cols-2 gap-3" : ""}>
-        <div className="space-y-1.5">
-          <Label htmlFor="userId">{game.userIdLabel}</Label>
-          <Input
-            id="userId"
-            value={userId}
-            onChange={(e) => {
-              onUserIdChange(e.target.value);
+    <div>
+      <div className="font-display text-[15px] font-extrabold text-ink">Siapa yang mau hoki?</div>
+      <div className="mb-3 text-[11.5px] text-[#8c7d75]">
+        {game.userIdLabel}
+        {needsServerId ? ` & ${game.serverIdLabel}` : ""} — bukan email, bukan password.
+      </div>
+
+      <div className={cn("grid gap-2.5", needsServerId && "grid-cols-[1.5fr_1fr]")}>
+        <Field
+          id="userId"
+          label={game.userIdLabel}
+          value={userId}
+          onChange={(v) => {
+            onUserIdChange(v);
+            setResult(null);
+          }}
+          placeholder="125 884 702"
+          filled={userId.length > 0}
+        />
+        {needsServerId && (
+          <Field
+            id="serverId"
+            label={game.serverIdLabel ?? "Server ID"}
+            value={serverId}
+            onChange={(v) => {
+              onServerIdChange(v);
               setResult(null);
             }}
-            placeholder={`Masukkan ${game.userIdLabel}`}
+            placeholder="2261"
+            filled={serverId.length > 0}
           />
-        </div>
-        {needsServerId && (
-          <div className="space-y-1.5">
-            <Label htmlFor="serverId">{game.serverIdLabel}</Label>
-            <Input
-              id="serverId"
-              value={serverId}
-              onChange={(e) => {
-                onServerIdChange(e.target.value);
-                setResult(null);
-              }}
-              placeholder={`Masukkan ${game.serverIdLabel}`}
-            />
-          </div>
         )}
       </div>
 
       {game.supportsValidation && (
-        <div className="flex items-center gap-3">
-          <Button
+        <div className="mt-2.5 flex flex-wrap items-center gap-2.5">
+          <button
             type="button"
-            variant="outline"
-            size="sm"
             disabled={!canCheck || checking}
             onClick={handleCheck}
+            className="ink press flex items-center gap-1.5 rounded-full bg-koban-soft px-4 py-2 font-display text-[12.5px] font-bold text-ink shadow-[2px_2px_0_var(--ink)] disabled:cursor-not-allowed disabled:opacity-45 disabled:shadow-none"
           >
-            {checking && <Loader2 className="h-4 w-4 animate-spin" />}
+            {checking && <Loader2 className="size-3.5 animate-spin" />}
             Cek ID
-          </Button>
-          {result && (
-            <span
-              className={
-                "flex items-center gap-1.5 text-sm " +
-                (result.valid ? "text-emerald-600" : "text-destructive")
-              }
-            >
-              {result.valid ? <CheckCircle2 className="h-4 w-4" /> : <XCircle className="h-4 w-4" />}
-              {result.valid ? result.username ?? "ID valid" : result.message ?? "ID tidak ditemukan"}
+          </button>
+
+          {result?.valid && (
+            <span className="flex items-center gap-2 rounded-xl border-[1.5px] border-collar-line bg-collar-soft px-3 py-2">
+              <span className="animate-tick flex size-[26px] items-center justify-center rounded-full bg-collar text-xs font-bold text-white">
+                ✓
+              </span>
+              <span className="text-[13px] font-bold text-collar-ink">
+                {result.username ?? "ID valid"}
+              </span>
+              <span className="text-[11.5px] text-[#6f8a55]">· ketemu!</span>
+            </span>
+          )}
+
+          {result && !result.valid && (
+            <span className="flex items-center gap-1.5 text-[12.5px] font-medium text-bell">
+              <XCircle className="size-4" />
+              {result.message ?? "ID tidak ditemukan"}
             </span>
           )}
         </div>

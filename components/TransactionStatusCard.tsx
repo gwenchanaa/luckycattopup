@@ -1,5 +1,4 @@
-import { Card, CardContent } from "@/components/ui/card";
-import { Separator } from "@/components/ui/separator";
+import Link from "next/link";
 import { StatusBadge } from "@/components/StatusBadge";
 import { CopyButton } from "@/components/CopyButton";
 import { formatRupiah } from "@/lib/utils";
@@ -12,56 +11,70 @@ function formatDate(iso: string) {
   }).format(new Date(iso));
 }
 
-export function TransactionStatusCard({ transaction }: { transaction: Transaction }) {
+function Row({ label, value }: { label: string; value: string }) {
   return (
-    <Card>
-      <CardContent className="space-y-5 p-5 sm:p-6">
-        <div className="flex flex-col items-center gap-2 text-center">
-          <p className="text-sm text-muted-foreground">Transaction ID</p>
-          <p className="break-all font-mono text-xl font-bold tracking-wide sm:text-2xl">
-            {transaction.id}
-          </p>
-          <CopyButton value={transaction.id} />
-        </div>
+    <div className="flex justify-between gap-4">
+      <span className="shrink-0">{label}</span>
+      <span className="text-right font-bold text-ink">{value}</span>
+    </div>
+  );
+}
 
-        <div className="flex justify-center">
-          <StatusBadge status={transaction.status} />
-        </div>
+export function TransactionStatusCard({ transaction }: { transaction: Transaction }) {
+  const done = transaction.status === "SUCCESS";
 
-        <Separator />
+  return (
+    <div className="ink drop-ink overflow-hidden rounded-[18px] bg-card">
+      <div className="flex flex-wrap items-center gap-x-2.5 gap-y-2 border-b border-dashed border-[#e3d3cb] px-4 py-3.5">
+        <span className="font-display text-[13px] font-bold text-ink">Struk pesanan</span>
+        <StatusBadge status={transaction.status} className="ml-auto" />
+      </div>
 
-        <div className="space-y-2 text-sm">
-          <div className="flex justify-between">
-            <span className="text-muted-foreground">Game</span>
-            <span className="font-medium">{transaction.gameName}</span>
-          </div>
-          <div className="flex justify-between">
-            <span className="text-muted-foreground">Produk</span>
-            <span className="font-medium">{transaction.productName}</span>
-          </div>
-          <div className="flex justify-between">
-            <span className="text-muted-foreground">User ID</span>
-            <span className="font-medium">
-              {transaction.accountUserId}
-              {transaction.accountServerId ? ` (${transaction.accountServerId})` : ""}
-            </span>
-          </div>
-          <div className="flex justify-between">
-            <span className="text-muted-foreground">Total Bayar</span>
-            <span className="font-semibold">{formatRupiah(transaction.price)}</span>
-          </div>
-          <div className="flex justify-between">
-            <span className="text-muted-foreground">Waktu Transaksi</span>
-            <span className="font-medium">{formatDate(transaction.createdAt)}</span>
-          </div>
-          {transaction.providerNote && (
-            <div className="flex justify-between gap-4">
-              <span className="text-muted-foreground">Catatan</span>
-              <span className="text-right font-medium">{transaction.providerNote}</span>
-            </div>
-          )}
+      <div className="flex flex-wrap items-center gap-2.5 border-b border-dashed border-[#e3d3cb] bg-background px-4 py-3">
+        <span className="min-w-0 break-all font-mono text-[13px] font-bold text-ink">
+          {transaction.id}
+        </span>
+        <CopyButton value={transaction.id} className="ml-auto" />
+      </div>
+
+      <div className="flex flex-col gap-2.5 px-4 py-4 text-[12.5px] text-[#6b5c55]">
+        <Row label="Game" value={transaction.gameName} />
+        <Row label="Item" value={transaction.productName} />
+        <Row
+          label="Tujuan"
+          value={`${transaction.accountUserId}${
+            transaction.accountServerId ? ` (${transaction.accountServerId})` : ""
+          }`}
+        />
+        {transaction.paymentMethod && <Row label="Metode" value={transaction.paymentMethod} />}
+        <Row label="Waktu pesan" value={formatDate(transaction.createdAt)} />
+        {done && <Row label="Waktu kirim" value={formatDate(transaction.updatedAt)} />}
+        {transaction.providerNote && <Row label="Catatan" value={transaction.providerNote} />}
+
+        <div className="my-0.5 h-px bg-[#f0e6dc]" />
+
+        <div className="flex items-baseline justify-between gap-4">
+          <span className="font-bold text-ink">Total dibayar</span>
+          <span className="font-display text-xl font-extrabold text-ink">
+            {formatRupiah(transaction.price)}
+          </span>
         </div>
-      </CardContent>
-    </Card>
+      </div>
+
+      <div className="flex gap-2.5 px-4 pb-4">
+        <Link
+          href="/#games"
+          className="ink drop-ink-sm press flex-1 rounded-full bg-koban px-4 py-2.5 text-center font-display text-[13px] font-bold text-ink"
+        >
+          Top up lagi
+        </Link>
+        <Link
+          href={`/status/${transaction.id}`}
+          className="ink press flex-1 rounded-full bg-card px-4 py-2.5 text-center font-display text-[13px] font-bold text-ink"
+        >
+          Lacak pesanan
+        </Link>
+      </div>
+    </div>
   );
 }

@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import { Check, Copy } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
 export function CopyButton({ value, className }: { value: string; className?: string }) {
@@ -19,15 +18,16 @@ export function CopyButton({ value, className }: { value: string; className?: st
   }
 
   return (
-    <Button
+    <button
       type="button"
-      variant="secondary"
-      size="sm"
       onClick={handleCopy}
-      className={cn("gap-1.5", className)}
+      className={cn(
+        "inline-flex items-center gap-1.5 rounded-lg border border-[#f3cfc9] px-2.5 py-1.5 text-[11px] font-bold text-bell transition-colors hover:bg-sakura-soft",
+        className
+      )}
     >
-      {copied ? <Check className="h-4 w-4" /> : <Copy className="h-4 w-4" />}
+      {copied ? <Check className="size-3.5" /> : <Copy className="size-3.5" />}
       {copied ? "Tersalin" : "Copy"}
-    </Button>
+    </button>
   );
 }

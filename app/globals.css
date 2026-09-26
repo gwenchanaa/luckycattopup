@@ -7,9 +7,29 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-sans);
+  --font-sans: var(--font-zen-maru), ui-sans-serif, system-ui, sans-serif;
   --font-mono: var(--font-geist-mono);
-  --font-heading: var(--font-sans);
+  --font-heading: var(--font-baloo), var(--font-zen-maru), cursive;
+  --font-display: var(--font-baloo), cursive;
+
+  /* Lucky Cat brand tokens, lifted from the logo */
+  --color-ink: var(--ink);
+  --color-sakura: var(--sakura);
+  --color-sakura-soft: var(--sakura-soft);
+  --color-sakura-line: var(--sakura-line);
+  --color-fur: var(--fur);
+  --color-koban: var(--koban);
+  --color-koban-soft: var(--koban-soft);
+  --color-koban-pale: var(--koban-pale);
+  --color-koban-line: var(--koban-line);
+  --color-collar: var(--collar);
+  --color-collar-soft: var(--collar-soft);
+  --color-collar-line: var(--collar-line);
+  --color-collar-ink: var(--collar-ink);
+  --color-bell: var(--bell);
+  --color-bell-deep: var(--bell-deep);
+  --color-hero-ink: var(--hero-ink);
+
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -39,82 +59,103 @@
   --color-popover: var(--popover);
   --color-card-foreground: var(--card-foreground);
   --color-card: var(--card);
-  --radius-sm: calc(var(--radius) * 0.6);
-  --radius-md: calc(var(--radius) * 0.8);
-  --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) * 1.4);
-  --radius-2xl: calc(var(--radius) * 1.8);
-  --radius-3xl: calc(var(--radius) * 2.2);
-  --radius-4xl: calc(var(--radius) * 2.6);
+  --radius-sm: calc(var(--radius) * 0.45);
+  --radius-md: calc(var(--radius) * 0.6);
+  --radius-lg: calc(var(--radius) * 0.75);
+  --radius-xl: var(--radius);
+  --radius-2xl: calc(var(--radius) * 1.15);
+  --radius-3xl: calc(var(--radius) * 1.4);
+  --radius-4xl: calc(var(--radius) * 1.7);
 }
 
 :root {
-  --background: #fff5e4;
-  --foreground: #4a3b33;
+  /* brand */
+  --ink: #2f2723;
+  --sakura: #ffc5c1;
+  --sakura-soft: #fff1ee;
+  --sakura-line: #ffd9d6;
+  --fur: #fcede0;
+  --koban: #f4c26d;
+  --koban-soft: #ffefc2;
+  --koban-pale: #ffe9a8;
+  --koban-line: #e2b95e;
+  --collar: #799c59;
+  --collar-soft: #f1f7ec;
+  --collar-line: #cfe0bf;
+  --collar-ink: #4c6634;
+  --bell: #c2453d;
+  --bell-deep: #8e2f29;
+  --hero-ink: #6b4038;
+
+  /* shadcn surface tokens */
+  --background: #fff8f4;
+  --foreground: #2f2723;
   --card: #ffffff;
-  --card-foreground: #4a3b33;
+  --card-foreground: #2f2723;
   --popover: #ffffff;
-  --popover-foreground: #4a3b33;
-  --primary: #ff9494;
-  --primary-foreground: #4a3b33;
-  --secondary: #ffd1d1;
-  --secondary-foreground: #4a3b33;
-  --muted: #ffe3e1;
-  --muted-foreground: #8a6f63;
-  --accent: #ffd1d1;
-  --accent-foreground: #4a3b33;
-  --destructive: oklch(0.577 0.245 27.325);
-  --border: #ffd8c9;
-  --input: #ffd8c9;
-  --ring: #ff9494;
-  --chart-1: #ff9494;
-  --chart-2: #ffd1d1;
-  --chart-3: #ffe3e1;
-  --chart-4: #d68c72;
-  --chart-5: #8a6f63;
-  --radius: 0.75rem;
-  --sidebar: #ffe3e1;
-  --sidebar-foreground: #4a3b33;
-  --sidebar-primary: #ff9494;
-  --sidebar-primary-foreground: #4a3b33;
-  --sidebar-accent: #ffd1d1;
-  --sidebar-accent-foreground: #4a3b33;
-  --sidebar-border: #ffd8c9;
-  --sidebar-ring: #ff9494;
+  --popover-foreground: #2f2723;
+  --primary: #c2453d;
+  --primary-foreground: #fff8f4;
+  --secondary: #ffc5c1;
+  --secondary-foreground: #2f2723;
+  --muted: #fff1ee;
+  --muted-foreground: #8c7d75;
+  --accent: #f4c26d;
+  --accent-foreground: #2f2723;
+  --destructive: #c2453d;
+  --border: #e3d3cb;
+  --input: #2f2723;
+  --ring: #c2453d;
+  --chart-1: #c2453d;
+  --chart-2: #f4c26d;
+  --chart-3: #799c59;
+  --chart-4: #ffc5c1;
+  --chart-5: #8c7d75;
+  --radius: 1.25rem;
+  --sidebar: #fff1ee;
+  --sidebar-foreground: #2f2723;
+  --sidebar-primary: #c2453d;
+  --sidebar-primary-foreground: #fff8f4;
+  --sidebar-accent: #ffc5c1;
+  --sidebar-accent-foreground: #2f2723;
+  --sidebar-border: #e3d3cb;
+  --sidebar-ring: #c2453d;
 }
 
 .dark {
-  --background: #2a211d;
-  --foreground: #ffe3e1;
-  --card: #362a25;
-  --card-foreground: #ffe3e1;
-  --popover: #362a25;
-  --popover-foreground: #ffe3e1;
-  --primary: #ff9494;
-  --primary-foreground: #2a211d;
+  --sakura-soft: #3a2b28;
+  --sakura-line: #5a413d;
+  --collar-soft: #27301f;
+  --collar-line: #3f5232;
+  --collar-ink: #b7d19a;
+  --hero-ink: #f6dcd7;
+
+  --background: #221b18;
+  --foreground: #fcede0;
+  --card: #2f2723;
+  --card-foreground: #fcede0;
+  --popover: #2f2723;
+  --popover-foreground: #fcede0;
+  --primary: #e0655c;
+  --primary-foreground: #221b18;
   --secondary: #4a3b33;
-  --secondary-foreground: #ffe3e1;
-  --muted: #3f322b;
-  --muted-foreground: #d1ab9d;
-  --accent: #4a3b33;
-  --accent-foreground: #ffe3e1;
-  --destructive: oklch(0.704 0.191 22.216);
+  --secondary-foreground: #fcede0;
+  --muted: #3a2f2a;
+  --muted-foreground: #c0aca2;
+  --accent: #f4c26d;
+  --accent-foreground: #2f2723;
+  --destructive: #e0655c;
   --border: #4a3b33;
-  --input: #4a3b33;
-  --ring: #ff9494;
-  --chart-1: #ff9494;
-  --chart-2: #ffd1d1;
-  --chart-3: #ffe3e1;
-  --chart-4: #d68c72;
-  --chart-5: #d1ab9d;
-  --sidebar: #362a25;
-  --sidebar-foreground: #ffe3e1;
-  --sidebar-primary: #ff9494;
-  --sidebar-primary-foreground: #2a211d;
+  --input: #fcede0;
+  --ring: #e0655c;
+  --sidebar: #2f2723;
+  --sidebar-foreground: #fcede0;
+  --sidebar-primary: #e0655c;
+  --sidebar-primary-foreground: #221b18;
   --sidebar-accent: #4a3b33;
-  --sidebar-accent-foreground: #ffe3e1;
+  --sidebar-accent-foreground: #fcede0;
   --sidebar-border: #4a3b33;
-  --sidebar-ring: #ff9494;
+  --sidebar-ring: #e0655c;
 }
 
 @layer base {
@@ -126,5 +167,113 @@
   }
   html {
     @apply font-sans;
+  }
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-heading);
+    letter-spacing: -0.01em;
+  }
+}
+
+@layer utilities {
+  /* The logo's heavy ink outline becomes the UI's border language:
+     2px ink strokes with a hard offset drop instead of soft shadows. */
+  .ink {
+    border: 2px solid var(--ink);
+  }
+  .ink-thin {
+    border: 1.5px solid var(--ink);
+  }
+  .drop-ink {
+    box-shadow: 3px 3px 0 var(--ink);
+  }
+  .drop-ink-sm {
+    box-shadow: 2px 2px 0 var(--ink);
+  }
+  .press {
+    transition: transform 0.12s ease, box-shadow 0.12s ease;
+  }
+  .press:hover {
+    transform: translate(1.5px, 1.5px);
+    box-shadow: 1.5px 1.5px 0 var(--ink);
+  }
+  .press:active {
+    transform: translate(3px, 3px);
+    box-shadow: 0 0 0 var(--ink);
+  }
+  .sakura-dots {
+    background-color: var(--sakura);
+    background-image: radial-gradient(rgba(255, 255, 255, 0.55) 1.6px, transparent 1.7px);
+    background-size: 18px 18px;
+  }
+  .cover-placeholder {
+    background: repeating-linear-gradient(135deg, #f3e7da 0 7px, #eadccc 7px 14px);
+  }
+  .animate-bob {
+    animation: lc-bob 4.6s ease-in-out infinite;
+  }
+  .animate-shine {
+    animation: lc-shine 5s ease-in-out infinite;
+  }
+  .animate-halo {
+    animation: lc-pulse 4.2s ease-in-out infinite;
+  }
+  .animate-tick {
+    animation: lc-tick 3s ease-in-out infinite;
+  }
+}
+
+@keyframes lc-bob {
+  0%,
+  100% {
+    transform: translateY(0) rotate(-1.2deg);
+  }
+  50% {
+    transform: translateY(-12px) rotate(1.2deg);
+  }
+}
+@keyframes lc-shine {
+  0% {
+    transform: translateX(-130%) skewX(-18deg);
+  }
+  60%,
+  100% {
+    transform: translateX(320%) skewX(-18deg);
+  }
+}
+@keyframes lc-pulse {
+  0%,
+  100% {
+    opacity: 0.3;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.75;
+    transform: scale(1.14);
+  }
+}
+@keyframes lc-tick {
+  0%,
+  100% {
+    transform: rotate(-8deg);
+  }
+  50% {
+    transform: rotate(8deg);
+  }
+}
+
+/* Motion is a "lucky charm", not gamer-flash — and nothing moves for
+   people who asked the OS to keep still. */
+@media (prefers-reduced-motion: reduce) {
+  .animate-bob,
+  .animate-shine,
+  .animate-halo,
+  .animate-tick {
+    animation: none;
+  }
+  .press:hover,
+  .press:active {
+    transform: none;
   }
 }

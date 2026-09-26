@@ -1,46 +1,45 @@
-import { ShieldCheck, Zap, Clock, KeyRound } from "lucide-react";
-
-const FEATURES = [
+const STEPS = [
   {
-    icon: Zap,
-    title: "Proses Cepat",
-    description: "Top up diproses otomatis begitu pembayaran dikonfirmasi.",
+    n: 1,
+    tone: "bg-bell text-white",
+    title: "Isi User ID",
+    description: "Nickname kamu langsung kami cek — tanpa login, tanpa password.",
   },
   {
-    icon: ShieldCheck,
-    title: "Aman & Terpercaya",
-    description: "Pembayaran diproses lewat Midtrans, mendukung berbagai metode.",
+    n: 2,
+    tone: "bg-koban text-ink",
+    title: "Bayar QRIS / e-wallet",
+    description: "QRIS, GoPay, OVO, DANA, ShopeePay, atau VA bank.",
   },
   {
-    icon: Clock,
-    title: "Buka 24 Jam",
-    description: "Top up kapan saja, sistem berjalan otomatis tanpa henti.",
-  },
-  {
-    icon: KeyRound,
-    title: "Tanpa Akun",
-    description: "Tidak perlu daftar. Cukup simpan Transaction ID kamu.",
+    n: 3,
+    tone: "bg-collar text-white",
+    title: "Item masuk otomatis",
+    description: "Rata-rata 48 detik. Resi dikirim ke WhatsApp.",
   },
 ];
 
 export function FeatureSection() {
   return (
-    <section className="bg-muted/40">
-      <div className="mx-auto max-w-6xl px-4 py-14 sm:px-6">
-        <div className="grid grid-cols-2 gap-6 md:grid-cols-4">
-          {FEATURES.map((feature) => (
-            <div key={feature.title} className="flex flex-col items-center gap-3 text-center">
-              <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-primary/20 text-foreground">
-                <feature.icon className="h-6 w-6" />
-              </div>
-              <div>
-                <p className="font-semibold">{feature.title}</p>
-                <p className="mt-1 text-sm text-muted-foreground">{feature.description}</p>
-              </div>
+    <section className="mx-auto grid max-w-6xl gap-5 px-4 py-8 sm:px-6 md:grid-cols-3">
+      {STEPS.map((step) => (
+        <div
+          key={step.n}
+          className="flex items-start gap-3.5 rounded-2xl border-[1.5px] border-sakura-line bg-sakura-soft px-4 py-4"
+        >
+          <span
+            className={`ink flex size-[34px] shrink-0 items-center justify-center rounded-full font-display text-base font-extrabold ${step.tone}`}
+          >
+            {step.n}
+          </span>
+          <div>
+            <div className="font-display text-sm font-bold text-ink">{step.title}</div>
+            <div className="mt-0.5 text-[11.5px] leading-[1.5] text-[#6b5c55]">
+              {step.description}
             </div>
-          ))}
+          </div>
         </div>
-      </div>
+      ))}
     </section>
   );
 }

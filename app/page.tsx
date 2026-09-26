@@ -1,19 +1,30 @@
+import { Suspense } from "react";
 import { HeroSection } from "@/components/HeroSection";
+import { LuckyCoinBar } from "@/components/LuckyCoinBar";
 import { FeatureSection } from "@/components/FeatureSection";
 import { GameBrowser } from "@/components/GameBrowser";
+import { GameGridSkeleton } from "@/components/GameGrid";
 
 export default function Home() {
   return (
     <div className="flex flex-col">
       <HeroSection />
-      <FeatureSection />
-      <section id="games" className="mx-auto w-full max-w-6xl px-4 py-14 sm:px-6">
-        <div className="mb-8 text-center">
-          <h2 className="text-2xl font-bold sm:text-3xl">Game Populer</h2>
-          <p className="mt-2 text-muted-foreground">Pilih game yang mau kamu top up</p>
+      <LuckyCoinBar />
+
+      <section id="games" className="mx-auto w-full max-w-6xl px-4 pt-8 sm:px-6">
+        <div className="mb-4 flex flex-wrap items-baseline gap-x-3 gap-y-1">
+          <h2 className="font-display text-[26px] font-extrabold leading-none text-ink">
+            Paling sering di-top up
+          </h2>
+          <span className="text-[12.5px] font-medium text-[#9c8c84]">Popular this week</span>
         </div>
-        <GameBrowser />
+
+        <Suspense fallback={<GameGridSkeleton />}>
+          <GameBrowser />
+        </Suspense>
       </section>
+
+      <FeatureSection />
     </div>
   );
 }
